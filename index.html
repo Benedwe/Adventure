@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Math Adventure Game - A fun and interactive way to learn math through challenges and quizzes. Perfect for students and adults to sharpen their math skills.">
+    <meta name="keywords" content="Math Game, Math Learning, Educational Game, Math Challenges, Fun Math, Interactive Math Game">
+    <meta name="author" content="Benedwe">
+    <meta property="og:title" content="Math Adventure Game - Learn Math While Having Fun">
+    <meta property="og:description" content="Sharpen your math skills with Math Adventure Game. Choose difficulty levels, solve math problems, and compete for high scores.">
+    <meta property="og:image" content="twitter.png"> 
+    <meta property="og:url" content="https://6815155b03b05800a3098352--brilliant-babka-da5583.netlify.app/"> 
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Math Adventure Game - Learn Math While Having Fun">
+    <meta name="twitter:description" content="Sharpen your math skills with Math Adventure Game. Choose difficulty levels, solve math problems, and compete for high scores.">
+    <meta name="twitter:image" content="twitter.png"> 
+    <title>Math Adventure Game - Learn Math While Having Fun</title>
+    <link rel="canonical" href="https://6815155b03b05800a3098352--brilliant-babka-da5583.netlify.app/"> 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        secondary: '#FFD166',
+                        success: '#06D6A0',
+                        danger: '#EF476F',
+                        background: {
+                            light: '#FFFFFF',
+                            dark: '#181818'
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 1.5s infinite',
+                        'pop': 'pop 0.3s ease-in-out',
+                    },
+                    keyframes: {
+                        pop: {
+                            '0%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.2)' },
+                            '100%': { transform: 'scale(1)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation {
+            animation: float 2s ease-in-out infinite;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--confetti-color, #5D5CDE);
+            opacity: 0;
+            animation: confetti-fall 3s ease-in-out forwards;
+            z-index: 50;
+        }
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        .dark .question-card {
+            background-color: #2A2A2A;
+            color: white;
+        }
+        .dark .option-button {
+            background-color: #3A3A3A;
+            color: white;
+        }
+        .dark .option-button:hover {
+            background-color: #4A4A4A;
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Math Adventure Gamezz",
+        "url": "https://yourwebsite.com", <!-- Replace with your website URL -->
+        "description": "A fun and interactive way to learn math through challenges and quizzes. Perfect for students and adults to sharpen their math skills.",
+        "author": {
+            "@type": "Person",
+            "name": "Benedwe"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Math Adventure Game"
+        }
+    }
+    </script>
+</head>
+<body class="antialiased bg-background-light dark:bg-background-dark min-h-screen transition-colors duration-300">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-primary mb-2">Math Adventure</h1>
+            <p class="text-gray-600 dark:text-gray-300 text-lg">Learn math while having fun!</p>
+        </header>
+
+        <div id="game-container" class="flex flex-col items-center">
+            <!-- Start Screen -->
+            <div id="start-screen" class="text-center w-full">
+                <div class="mb-8 float-animation">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto text-primary">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold mb-6 dark:text-white">Choose a Difficulty Level</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <button class="difficulty-btn bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-lg text-xl font-bold shadow-lg transition" data-level="easy">
+                        Easy (1-10)
+                    </button>
+                    <button class="difficulty-btn bg-yellow-500 hover:bg-yellow-600 text-white py-4 px-6 rounded-lg text-xl font-bold shadow-lg transition" data-level="medium">
+                        Medium (1-20)
+                    </button>
+                    <button class="difficulty-btn bg-red-500 hover:bg-red-600 text-white py-4 px-6 rounded-lg text-xl font-bold shadow-lg transition" data-level="hard">
+                        Hard (1-50)
+                    </button>
+                </div>
+
+                <h2 class="text-2xl font-bold mb-6 dark:text-white">Choose Operations</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="addition" class="operation-checkbox form-checkbox h-6 w-6 text-primary rounded focus:ring-primary" checked>
+                        <label for="addition" class="ml-2 text-xl dark:text-white">Addition (+)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="subtraction" class="operation-checkbox form-checkbox h-6 w-6 text-primary rounded focus:ring-primary">
+                        <label for="subtraction" class="ml-2 text-xl dark:text-white">Subtraction (-)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="multiplication" class="operation-checkbox form-checkbox h-6 w-6 text-primary rounded focus:ring-primary">
+                        <label for="multiplication" class="ml-2 text-xl dark:text-white">Multiplication (×)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="division" class="operation-checkbox form-checkbox h-6 w-6 text-primary rounded focus:ring-primary">
+                        <label for="division" class="ml-2 text-xl dark:text-white">Division (÷)</label>
+                    </div>
+                </div>
+
+                <button id="start-btn" class="bg-primary hover:bg-indigo-700 text-white py-4 px-8 rounded-lg text-xl font-bold shadow-lg transition transform hover:scale-105">
+                    Start Game
+                </button>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="game-screen" class="hidden w-full">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="text-lg font-bold dark:text-white">
+                        Score: <span id="score">0</span>
+                    </div>
+                    <div class="text-lg font-bold dark:text-white">
+                        Question: <span id="question-number">1</span>/<span id="total-questions">10</span>
+                    </div>
+                    <div class="text-lg font-bold dark:text-white">
+                        Time: <span id="timer">60</span>s
+                    </div>
+                </div>
+
+                <div class="question-card bg-white rounded-xl shadow-lg p-8 mb-6 text-center">
+                    <h2 id="question" class="text-3xl md:text-4xl font-bold mb-6">6 + 7 = ?</h2>
+                    <div id="options-container" class="grid grid-cols-2 gap-4">
+                        <!-- Options will be inserted here -->
+                    </div>
+                </div>
+
+                <div class="flex justify-between">
+                    <button id="home-btn" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg text-lg font-bold shadow-lg transition">
+                        Home
+                    </button>
+                    <button id="next-btn" class="hidden bg-primary hover:bg-indigo-700 text-white py-2 px-4 rounded-lg text-lg font-bold shadow-lg transition">
+                        Next Question
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="result-screen" class="hidden text-center w-full">
+                <div class="mb-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto text-success">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold mb-4 dark:text-white">Game Complete!</h2>
+                <p class="text-xl mb-2 dark:text-gray-300">Your score: <span id="final-score" class="font-bold text-primary">0</span> / <span id="max-score">10</span></p>
+                <p class="text-xl mb-6 dark:text-gray-300">Time taken: <span id="time-taken" class="font-bold">0</span> seconds</p>
+                
+                <div id="achievements" class="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Achievements will be inserted here -->
+                </div>
+                
+                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                    <button id="play-again-btn" class="bg-primary hover:bg-indigo-700 text-white py-3 px-6 rounded-lg text-xl font-bold shadow-lg transition">
+                        Play Again
+                    </button>
+                    <button id="change-settings-btn" class="bg-secondary hover:bg-yellow-500 text-white py-3 px-6 rounded-lg text-xl font-bold shadow-lg transition">
+                        Change Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check for dark mode preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Game variables
+        let score = 0;
+        let currentQuestion = 0;
+        let totalQuestions = 10;
+        let questions = [];
+        let timeLimit = 60;
+        let timer;
+        let startTime;
+        let endTime;
+        let difficulty = {
+            easy: { min: 1, max: 10 },
+            medium: { min: 1, max: 20 },
+            hard: { min: 1, max: 50 }
+        };
+        let selectedDifficulty = 'easy';
+        let operations = {
+            addition: { symbol: '+', selected: true },
+            subtraction: { symbol: '-', selected: false },
+            multiplication: { symbol: '×', selected: false },
+            division: { symbol: '÷', selected: false }
+        };
+
+        // DOM elements
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const startBtn = document.getElementById('start-btn');
+        const homeBtn = document.getElementById('home-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const playAgainBtn = document.getElementById('play-again-btn');
+        const changeSettingsBtn = document.getElementById('change-settings-btn');
+        const scoreDisplay = document.getElementById('score');
+        const questionNumberDisplay = document.getElementById('question-number');
+        const totalQuestionsDisplay = document.getElementById('total-questions');
+        const timerDisplay = document.getElementById('timer');
+        const questionDisplay = document.getElementById('question');
+        const optionsContainer = document.getElementById('options-container');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const maxScoreDisplay = document.getElementById('max-score');
+        const timeTakenDisplay = document.getElementById('time-taken');
+        const achievementsContainer = document.getElementById('achievements');
+        const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+        const operationCheckboxes = document.querySelectorAll('.operation-checkbox');
+
+        // Setup event listeners
+        startBtn.addEventListener('click', startGame);
+        homeBtn.addEventListener('click', goHome);
+        nextBtn.addEventListener('click', nextQuestion);
+        playAgainBtn.addEventListener('click', startGame);
+        changeSettingsBtn.addEventListener('click', goHome);
+
+        difficultyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                difficultyButtons.forEach(b => b.classList.remove('ring-4', 'ring-blue-500'));
+                button.classList.add('ring-4', 'ring-blue-500');
+                selectedDifficulty = button.dataset.level;
+            });
+        });
+
+        operationCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const operation = checkbox.id;
+                operations[operation].selected = checkbox.checked;
+                
+                // Ensure at least one operation is selected
+                const anySelected = Object.values(operations).some(op => op.selected);
+                if (!anySelected) {
+                    checkbox.checked = true;
+                    operations[operation].selected = true;
+                }
+            });
+        });
+
+        // Select first difficulty button by default
+        difficultyButtons[0].classList.add('ring-4', 'ring-blue-500');
+
+        // Game functions
+        function startGame() {
+            // Reset game state
+            score = 0;
+            currentQuestion = 0;
+            scoreDisplay.textContent = score;
+            
+            // Check if at least one operation is selected
+            const anySelected = Object.values(operations).some(op => op.selected);
+            if (!anySelected) {
+                operations.addition.selected = true;
+                document.getElementById('addition').checked = true;
+            }
+            
+            // Generate questions
+            generateQuestions();
+            
+            // Update UI
+            totalQuestionsDisplay.textContent = totalQuestions;
+            questionNumberDisplay.textContent = currentQuestion + 1;
+            maxScoreDisplay.textContent = totalQuestions;
+            
+            // Show game screen
+            startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            
+            // Start timer
+            startTime = new Date();
+            resetTimer();
+            
+            // Display first question
+            showQuestion();
+        }
+
+        function goHome() {
+            // Clear timer
+            clearInterval(timer);
+            
+            // Show start screen
+            gameScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+
+        function generateQuestions() {
+            const selectedOperations = Object.entries(operations)
+                .filter(([_, op]) => op.selected)
+                .map(([key, op]) => ({ key, symbol: op.symbol }));
+            
+            if (selectedOperations.length === 0) {
+                selectedOperations.push({ key: 'addition', symbol: '+' });
+            }
+            
+            const { min, max } = difficulty[selectedDifficulty];
+            questions = [];
+            
+            for (let i = 0; i < totalQuestions; i++) {
+                const operationIndex = Math.floor(Math.random() * selectedOperations.length);
+                const operation = selectedOperations[operationIndex];
+                
+                let num1, num2, answer;
+                
+                switch (operation.key) {
+                    case 'addition':
+                        num1 = Math.floor(Math.random() * (max - min + 1)) + min;
+                        num2 = Math.floor(Math.random() * (max - min + 1)) + min;
+                        answer = num1 + num2;
+                        break;
+                    case 'subtraction':
+                        num1 = Math.floor(Math.random() * (max - min + 1)) + min;
+                        num2 = Math.floor(Math.random() * (Math.min(num1, max) - min + 1)) + min;
+                        answer = num1 - num2;
+                        break;
+                    case 'multiplication':
+                        num1 = Math.floor(Math.random() * (Math.sqrt(max) - min + 1)) + min;
+                        num2 = Math.floor(Math.random() * (Math.sqrt(max) - min + 1)) + min;
+                        answer = num1 * num2;
+                        break;
+                    case 'division':
+                        num2 = Math.floor(Math.random() * (Math.sqrt(max) - min + 1)) + min;
+                        answer = Math.floor(Math.random() * (Math.sqrt(max) - min + 1)) + min;
+                        num1 = num2 * answer;
+                        break;
+                }
+                
+                questions.push({
+                    num1,
+                    num2,
+                    operation: operation.symbol,
+                    answer,
+                    options: generateOptions(answer, min, max)
+                });
+            }
+        }
+
+        function generateOptions(answer, min, max) {
+            const options = [answer];
+            
+            while (options.length < 4) {
+                // Generate a random number within range of the answer
+                let option;
+                const range = Math.min(10, max - min);
+                
+                if (Math.random() < 0.5) {
+                    // Option close to the answer
+                    option = answer + Math.floor(Math.random() * range) + 1;
+                } else {
+                    // Option close to the answer (below)
+                    option = answer - Math.floor(Math.random() * range) - 1;
+                }
+                
+                // Ensure option is within bounds and unique
+                if (option >= min && option <= max * 2 && !options.includes(option)) {
+                    options.push(option);
+                }
+            }
+            
+            // Shuffle options
+            return options.sort(() => Math.random() - 0.5);
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            
+            // Update question text
+            questionDisplay.textContent = question.num1 + " " + question.operation + " " + question.num2;
+            
+            // Create options
+            optionsContainer.innerHTML = '';
+            question.options.forEach(option => {
+                const optionButton = document.createElement('button');
+                optionButton.classList.add('option-button', 'bg-gray-100', 'hover:bg-gray-200', 'py-4', 'px-6', 'rounded-lg', 'text-2xl', 'font-bold', 'shadow-md', 'transition');
+                optionButton.textContent = option;
+                optionButton.addEventListener('click', () => checkAnswer(option));
+                optionsContainer.appendChild(optionButton);
+            });
+            
+            // Hide next button
+            nextBtn.classList.add('hidden');
+        }
+
+        function checkAnswer(selectedOption) {
+            const question = questions[currentQuestion];
+            const optionButtons = optionsContainer.querySelectorAll('.option-button');
+            
+            // Disable all option buttons
+            optionButtons.forEach(button => {
+                button.disabled = true;
+                
+                if (parseInt(button.textContent) === question.answer) {
+                    // Highlight correct answer
+                    button.classList.remove('bg-gray-100', 'hover:bg-gray-200');
+                    button.classList.add('bg-success', 'text-white');
+                }
+                
+                if (parseInt(button.textContent) === selectedOption && selectedOption !== question.answer) {
+                    // Highlight incorrect selection
+                    button.classList.remove('bg-gray-100', 'hover:bg-gray-200');
+                    button.classList.add('bg-danger', 'text-white');
+                }
+            });
+            
+            // Check if answer is correct
+            if (selectedOption === question.answer) {
+                score++;
+                scoreDisplay.textContent = score;
+                
+                // Show confetti for correct answer
+                createConfetti();
+            }
+            
+            // Show next button
+            nextBtn.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion >= totalQuestions) {
+                // Game over
+                endGame();
+            } else {
+                // Update question number
+                questionNumberDisplay.textContent = currentQuestion + 1;
+                
+                // Show next question
+                showQuestion();
+            }
+        }
+
+        function resetTimer() {
+            // Clear existing timer
+            clearInterval(timer);
+            
+            // Set time limit based on difficulty
+            switch (selectedDifficulty) {
+                case 'easy':
+                    timeLimit = 60;
+                    break;
+                case 'medium':
+                    timeLimit = 90;
+                    break;
+                case 'hard':
+                    timeLimit = 120;
+                    break;
+            }
+            
+            timerDisplay.textContent = timeLimit;
+            
+            // Start new timer
+            timer = setInterval(() => {
+                timeLimit--;
+                timerDisplay.textContent = timeLimit;
+                
+                if (timeLimit <= 0) {
+                    clearInterval(timer);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            // Clear timer
+            clearInterval(timer);
+            
+            // Calculate time taken
+            endTime = new Date();
+            const timeTaken = Math.floor((endTime - startTime) / 1000);
+            timeTakenDisplay.textContent = timeTaken;
+            
+            // Update final score
+            finalScoreDisplay.textContent = score;
+            
+            // Generate achievements
+            generateAchievements();
+            
+            // Show result screen
+            gameScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+        }
+
+        function generateAchievements() {
+            achievementsContainer.innerHTML = '';
+            
+            const achievements = [];
+            
+            // Score-based achievements
+            if (score === totalQuestions) {
+                achievements.push({
+                    title: 'Perfect Score!',
+                    description: 'You answered all questions correctly!',
+                    icon: 'star',
+                    color: 'text-yellow-500'
+                });
+            } else if (score >= totalQuestions * 0.8) {
+                achievements.push({
+                    title: 'Math Master',
+                    description: 'You got more than 80% correct!',
+                    icon: 'trophy',
+                    color: 'text-yellow-500'
+                });
+            } else if (score >= totalQuestions * 0.5) {
+                achievements.push({
+                    title: 'Math Apprentice',
+                    description: 'You got more than 50% correct!',
+                    icon: 'graduation-cap',
+                    color: 'text-blue-500'
+                });
+            }
+            
+            // Difficulty achievements
+            if (selectedDifficulty === 'hard' && score >= totalQuestions * 0.7) {
+                achievements.push({
+                    title: 'Challenge Accepted',
+                    description: 'You conquered the hard difficulty!',
+                    icon: 'mountain',
+                    color: 'text-red-500'
+                });
+            }
+            
+            // Operation achievements
+            if (operations.division.selected && operations.multiplication.selected && score >= totalQuestions * 0.6) {
+                achievements.push({
+                    title: 'Multiplication Master',
+                    description: 'You mastered multiplication and division!',
+                    icon: 'calculator',
+                    color: 'text-indigo-500'
+                });
+            }
+            
+            // Display achievements
+            achievements.forEach(achievement => {
+                const achievementEl = document.createElement('div');
+                achievementEl.className = 'bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 flex items-center animate-pop';
+                
+                achievementEl.innerHTML = `
+                    <div class="mr-4 ${achievement.color}">
+                        <i class="fas fa-${achievement.icon} text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg dark:text-white">${achievement.title}</h3>
+                        <p class="text-gray-600 dark:text-gray-300">${achievement.description}</p>
+                    </div>
+                `;
+                
+                achievementsContainer.appendChild(achievementEl);
+            });
+            
+            // If no achievements, show a message
+            if (achievements.length === 0) {
+                const messageEl = document.createElement('div');
+                messageEl.className = 'col-span-full text-center text-gray-600 dark:text-gray-300 py-4';
+                messageEl.textContent = 'Keep practicing to earn achievements!';
+                achievementsContainer.appendChild(messageEl);
+            }
+        }
+
+        function createConfetti() {
+            const confettiCount = 50;
+            const colors = ['#5D5CDE', '#FFD166', '#06D6A0', '#EF476F', '#118AB2'];
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.setProperty('--confetti-color', colors[Math.floor(Math.random() * colors.length)]);
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = `${Math.random() * 10 + 5}px`;
+                confetti.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+                
+                document.body.appendChild(confetti);
+                
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
+
+        
+        const fontAwesome = document.createElement('link');
+        fontAwesome.rel = 'stylesheet';
+        fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css';
+        document.head.appendChild(fontAwesome);
+    </script>
+    <a href="blog.html" class="fixed bottom-4 right-4 bg-secondary hover:bg-yellow-500 text-white py-3 px-6 rounded-lg text-lg font-bold shadow-lg transition">
+        How it works
+    </a>
+    
+</body>
+</html>
