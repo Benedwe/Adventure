@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-adsense-account" content="ca-pub-3651384611185558">
+    <meta name="google-adsense-account" content="ca-pub-4852353466228578">
     <meta charset="UTF-8">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,13 +11,13 @@
     <meta property="og:title" content="Math Adventure Game - Learn Math While Having Fun">
     <meta property="og:description" content="Sharpen your math skills with Math Adventure Game. Choose difficulty levels, solve math problems, and compete for high scores.">
     <meta property="og:image" content="twitter.png"> 
-    <meta property="og:url" content="https://6815155b03b05800a3098352--brilliant-babka-da5583.netlify.app/"> 
+    <meta property="og:url" content="https://www.mathadventure.online"> 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Math Adventure Game - Learn Math While Having Fun">
     <meta name="twitter:description" content="Sharpen your math skills with Math Adventure Game. Choose difficulty levels, solve math problems, and compete for high scores.">
     <meta name="twitter:image" content="twitter.png"> 
     <title>Math Adventure Game - Learn Math While Having Fun</title>
-    <link rel="canonical" href="https://6815155b03b05800a3098352--brilliant-babka-da5583.netlify.app/"> 
+    <link rel="canonical" href="https://www.mathadventure.online/"> 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -115,7 +115,7 @@
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "Math Adventure Gamezz",
-        "url": "https://brilliant-babka-da5583.netlify.app/", 
+        "url": "https://mathadventuregame.com/", 
         "description": "A fun and interactive way to learn math through challenges and quizzes. Perfect for students and adults to sharpen their math skills.",
         "author": {
             "@type": "Person",
@@ -133,8 +133,16 @@
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="application-version" content="1.1">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4852353466228578"
+     crossorigin="anonymous"></script>
 </head>
 <body class="antialiased bg-background-light dark:bg-background-dark min-h-screen transition-colors duration-300">
+    <noscript>
+        <div class="fixed top-0 left-0 w-full bg-red-700 text-white text-center py-2 z-50">
+           
+        </div>
+    </noscript>
 
     <div class="fixed top-4 left-4 z-50">
         <a href="blog.html"
@@ -145,7 +153,7 @@
 
    
     <div class="fixed top-4 right-4 z-50">
-        <button id="menu-dots-btn" class="w-12 h-12 flex flex-col justify-center items-center rounded-full bg-primary hover:bg-indigo-700 shadow-lg focus:outline-none focus:ring-2 focus:ring-primary transition">
+        <button id="menu-dots-btn" title="Open menu" class="w-12 h-12 flex flex-col justify-center items-center rounded-full bg-primary hover:bg-indigo-700 shadow-lg focus:outline-none focus:ring-2 focus:ring-primary transition">
             <span class="block w-2 h-2 bg-white rounded-full mb-1"></span>
             <span class="block w-2 h-2 bg-white rounded-full mb-1"></span>
             <span class="block w-2 h-2 bg-white rounded-full"></span>
@@ -710,6 +718,39 @@
             }
             installBtn.classList.add('hidden');
         });
+
+        // Show an error if offline when the app is opened
+function showOfflineError() {
+    // Only show if not already present
+    if (!document.getElementById('offline-error')) {
+        const offlineDiv = document.createElement('div');
+        offlineDiv.id = 'offline-error';
+        offlineDiv.className = 'fixed top-0 left-0 w-full z-50 bg-red-600 text-white text-center py-3 font-bold text-base md:text-lg shadow-lg';
+        offlineDiv.textContent = 'You are offline. Some features may not work until you reconnect.';
+        document.body.appendChild(offlineDiv);
+    }
+}
+
+function hideOfflineError() {
+    const offlineDiv = document.getElementById('offline-error');
+    if (offlineDiv) {
+        offlineDiv.remove();
+    }
+}
+
+// Show error if offline on load
+window.addEventListener('load', () => {
+    if (!navigator.onLine) {
+        showOfflineError();
+    }
+});
+
+// Listen for online/offline changes
+window.addEventListener('offline', showOfflineError);
+window.addEventListener('online', hideOfflineError);
+
+    // Optionally, display version in the console for debugging
+    console.log("Math Adventure App Version 1.1");
     </script>
 </body>
 </html>
